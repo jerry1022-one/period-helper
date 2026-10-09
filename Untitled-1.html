@@ -249,7 +249,7 @@
 
   <!-- 暖心提醒區 -->
   <div class="care-banner">
-    <div class="care-content" id="careTipText">💡 貼心提醒：這幾天多喝些溫熱黑糖水，肚子痛隨時找男友秀秀！</div>
+    <div class="care-content" id="careTipText">💡 貼心提醒：經期前後幾天記得吃補鐵糖，補回流失的血</div>
     <button class="refresh-tip-btn" onclick="manualNextTip()" title="換一個提醒">🔄</button>
   </div>
 
@@ -261,12 +261,14 @@
   <div class="form-group">
     <label>快捷狀況標籤：</label>
     <div class="tag-group" id="tagGroup">
-      <span class="tag-btn" onclick="toggleTag(this)">🩸 量偏大</span>
-      <span class="tag-btn" onclick="toggleTag(this)">😣 肚子悶痛</span>
-      <span class="tag-btn" onclick="toggleTag(this)">😖 腰酸背痛</span>
-      <span class="tag-btn" onclick="toggleTag(this)">🌀 頭暈疲倦</span>
-      <span class="tag-btn" onclick="toggleTag(this)">🥺 心情低落</span>
-      <span class="tag-btn" onclick="toggleTag(this)">✨ 狀況良好</span>
+      <span class="tag-btn" onclick="toggleTag(this)">量大</span>
+      <span class="tag-btn" onclick="toggleTag(this)">肚子悶痛</span>
+      <span class="tag-btn" onclick="toggleTag(this)">腰酸</span>
+      <span class="tag-btn" onclick="toggleTag(this)">頭暈</span>
+      <span class="tag-btn" onclick="toggleTag(this)">心情低落</span>
+      <span class="tag-btn" onclick="toggleTag(this)">報器</span>
+      <span class="tag-btn" onclick="toggleTag(this)">無力</span>
+      <span class="tag-btn" onclick="toggleTag(this)">想吐</span>
     </div>
   </div>
 
@@ -409,7 +411,7 @@
         <div class="history-note">📝 狀況：<b>${noteStr}</b></div>
         
         <div class="note-edit-box">
-          <input type="text" id="editInput-${index}" placeholder="補充這天的狀況 (按更新送出)...">
+          <input type="text" id="editInput-${index}" placeholder="補充狀況...">
           <button class="update-btn" onclick="updateItemNote(${index})">補充</button>
         </div>
       `;
@@ -433,6 +435,10 @@
       loadHistory();
     }
   }
+</script>
+
+</body>
+</html>
 </script>
 
 </body>
