@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌸 恬の專屬經期紀錄本</title>
+  <style>
+    :root {
+      --bg-color: #fdf8f5;
+      --card-bg: #ffffff;
+      --primary: #f2a6a6;
+      --primary-hover: #e88d8d;
+      --secondary: #a3c4f3;
+      --text-main: #5c4a4a;
+      --accent: #f7d1d1;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 8px 24px rgba(242, 166, 166, 0.18);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.4rem;
+      color: #d97777;
+      margin-bottom: 15px;
+    }
+
+    /* 暖心提醒區塊 */
+    .care-banner {
+      background: linear-gradient(135deg, #fff0f0 0%, #faf0e6 100%);
+      border-left: 4px solid var(--primary);
+      border-radius: 12px;
+      padding: 12px 15px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 48px;
+    }
+
+    .care-content {
+      font-size: 0.88rem;
+      color: #7a5c5c;
+      line-height: 1.4;
+      flex: 1;
+      transition: opacity 0.4s ease-in-out;
+      opacity: 1;
+    }
+
+    .care-content.fade-out {
+      opacity: 0;
+    }
+
+    .refresh-tip-btn {
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+
+    .refresh-tip-btn:active {
+      transform: rotate(180deg);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input[type="date"], input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      box-sizing: border-box;
+      font-size: 0.95rem;
+      outline: none;
+      background-color: #fffaf9;
+    }
+
+    /* 狀況標籤按鈕區塊 */
+    .tag-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+      margin-bottom: 8px;
+    }
+
+    .tag-btn {
+      background-color: #fff0f0;
+      border: 1px solid var(--accent);
+      color: #7a5c5c;
+      padding: 6px 12px;
+      border-radius: 15px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tag-btn.active {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      font-weight: bold;
+    }
+
+    button.btn-record {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-top: 10px;
+    }
+
+    button.btn-record:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .history-section {
+      margin-top: 25px;
+      border-top: 1px dashed var(--accent);
+      padding-top: 15px;
+    }
+
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .clear-btn {
+      background: none;
+      border: none;
+      color: #b59999;
+      font-size: 0.8rem;
+      cursor: pointer;
+      padding: 0;
+      margin: 0;
+      width: auto;
+    }
+
+    .history-list {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0 0;
+    }
+
+    .history-list li {
+      background: #fafafc;
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+      border: 1px solid #f0e6e6;
+    }
+
+    .item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .history-date {
+      font-weight: bold;
+      color: #d97777;
+      font-size: 0.95rem;
+    }
+
+    .delete-item-btn {
+      background: none;
+      border: none;
+      color: #b59999;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    .delete-item-btn:hover {
+      color: #d97777;
+    }
+
+    .history-note {
+      color: #666;
+      font-size: 0.85rem;
+      margin-bottom: 8px;
+    }
+
+    .note-edit-box {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .note-edit-box input {
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      border-radius: 6px;
+    }
+
+    .update-btn {
+      background-color: var(--secondary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0 12px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🌸 恬の專屬經期紀錄本</h1>
+
+  <!-- 暖心提醒區 -->
+  <div class="care-banner">
+    <div class="care-content" id="careTipText">💡 貼心提醒：這幾天多喝些溫熱黑糖水，肚子痛隨時找男友秀秀！</div>
+    <button class="refresh-tip-btn" onclick="manualNextTip()" title="換一個提醒">🔄</button>
+  </div>
+
+  <div class="form-group">
+    <label for="startDate">經期開始日期：</label>
+    <input type="date" id="startDate">
+  </div>
+
+  <div class="form-group">
+    <label>快捷狀況標籤：</label>
+    <div class="tag-group" id="tagGroup">
+      <span class="tag-btn" onclick="toggleTag(this)">🩸 量偏大</span>
+      <span class="tag-btn" onclick="toggleTag(this)">😣 肚子悶痛</span>
+      <span class="tag-btn" onclick="toggleTag(this)">😖 腰酸背痛</span>
+      <span class="tag-btn" onclick="toggleTag(this)">🌀 頭暈疲倦</span>
+      <span class="tag-btn" onclick="toggleTag(this)">🥺 心情低落</span>
+      <span class="tag-btn" onclick="toggleTag(this)">✨ 狀況良好</span>
+    </div>
+  </div>
+
+  <button class="btn-record" onclick="addHistoryRecord()">📌 建立 / 更新當天紀錄</button>
+
+  <div class="history-section">
+    <div class="history-header">
+      <label>📚 歷史紀錄與狀況補充：</label>
+      <button class="clear-btn" onclick="clearAllHistory()">清空全部</button>
+    </div>
+    <ul class="history-list" id="historyList"></ul>
+  </div>
+</div>
+
+<script>
+  // 專屬關心小語清單
+  const careTips = [
+    "💡 貼心提醒：這幾天多喝些溫熱開水，肚子痛隨時告訴我！",
+    "💡 貼心提醒：備好熱敷墊與暖暖包，記得不要碰冰冷食物喔～",
+    "💡 貼心提醒：這幾天容易生氣或疲倦是正常的，多休息，身體最重要！",
+    "💡 貼心提醒：經期前後幾天記得吃補鐵糖，補回流失的血",
+  ];
+  let currentTipIndex = 0;
+  let autoTimer = null;
+
+  window.onload = function() {
+    loadHistory();
+    document.getElementById('startDate').valueAsDate = new Date();
+    
+    // 開啟網頁後設定每 5 秒（5000ms）自動切換一次小語
+    startAutoSwitch();
+  };
+
+  // 自動定時切換
+  function startAutoSwitch() {
+    if (autoTimer) clearInterval(autoTimer);
+    autoTimer = setInterval(() => {
+      nextTip();
+    }, 5000); // 5000 毫秒 = 5 秒，可自行調快或調慢
+  }
+
+  // 切換小語（含淡入淡出動畫效果）
+  function nextTip() {
+    const tipEl = document.getElementById('careTipText');
+    tipEl.classList.add('fade-out');
+
+    setTimeout(() => {
+      currentTipIndex = (currentTipIndex + 1) % careTips.length;
+      tipEl.innerText = careTips[currentTipIndex];
+      tipEl.classList.remove('fade-out');
+    }, 400); // 動畫淡出 0.4 秒後替換文字再淡入
+  }
+
+  // 手動點擊 🔄 按鈕時切換並重置計時器
+  function manualNextTip() {
+    nextTip();
+    startAutoSwitch(); // 手動點擊後重新計算 5 秒
+  }
+
+  function toggleTag(element) {
+    element.classList.toggle('active');
+  }
+
+  function addHistoryRecord() {
+    const startDateVal = document.getElementById('startDate').value;
+    
+    const activeTags = document.querySelectorAll('.tag-btn.active');
+    let selectedTagTexts = [];
+    activeTags.forEach(tag => {
+      selectedTagTexts.push(tag.innerText.replace(/^[^\s]+\s/, ''));
+    });
+
+    const finalNote = selectedTagTexts.length > 0 ? selectedTagTexts.join('、') : '正常 / 無特殊狀況';
+
+    if (!startDateVal) {
+      alert("請選擇日期！");
+      return;
+    }
+
+    let history = JSON.parse(localStorage.getItem('periodHistory')) || [];
+    const existingIndex = history.findIndex(item => item.date === startDateVal);
+
+    if (existingIndex !== -1) {
+      history[existingIndex].note = finalNote;
+    } else {
+      history.push({ date: startDateVal, note: finalNote });
+    }
+
+    history.sort((a, b) => new Date(b.date) - new Date(a.date));
+    
+    localStorage.setItem('periodHistory', JSON.stringify(history));
+    loadHistory();
+    alert(`已儲存 ${startDateVal} 的紀錄！`);
+    
+    document.querySelectorAll('.tag-btn').forEach(btn => btn.classList.remove('active'));
+    manualNextTip();
+  }
+
+  function updateItemNote(index) {
+    const inputEl = document.getElementById(`editInput-${index}`);
+    const newNoteText = inputEl.value.trim();
+
+    if (!newNoteText) {
+      alert("請輸入要補充的狀況！");
+      return;
+    }
+
+    let history = JSON.parse(localStorage.getItem('periodHistory')) || [];
+    if (history[index]) {
+      if (history[index].note && history[index].note !== '正常 / 無特殊狀況') {
+        history[index].note += '、' + newNoteText;
+      } else {
+        history[index].note = newNoteText;
+      }
+      localStorage.setItem('periodHistory', JSON.stringify(history));
+      loadHistory();
+    }
+  }
+
+  function loadHistory() {
+    let history = JSON.parse(localStorage.getItem('periodHistory')) || [];
+    const listEl = document.getElementById('historyList');
+    listEl.innerHTML = '';
+    
+    if (history.length === 0) {
+      listEl.innerHTML = '<li style="text-align:center; color:#a09090;">尚無歷史紀錄</li>';
+      return;
+    }
+
+    history.forEach((item, index) => {
+      const dateStr = typeof item === 'string' ? item : item.date;
+      const noteStr = typeof item === 'string' ? '無特殊狀況' : (item.note || '無特殊狀況');
+
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <div class="item-top">
+          <span class="history-date">🩸 ${dateStr}</span>
+          <button class="delete-item-btn" onclick="deleteHistoryItem(${index})">刪除 ✕</button>
+        </div>
+        <div class="history-note">📝 狀況：<b>${noteStr}</b></div>
+        
+        <div class="note-edit-box">
+          <input type="text" id="editInput-${index}" placeholder="補充這天的狀況 (按更新送出)...">
+          <button class="update-btn" onclick="updateItemNote(${index})">補充</button>
+        </div>
+      `;
+      listEl.appendChild(li);
+    });
+  }
+
+  function deleteHistoryItem(index) {
+    let history = JSON.parse(localStorage.getItem('periodHistory')) || [];
+    history.splice(index, 1);
+    localStorage.setItem('periodHistory', JSON.stringify(history));
+    loadHistory();
+  }
+
+  function clearAllHistory() {
+    let history = JSON.parse(localStorage.getItem('periodHistory')) || [];
+    if (history.length === 0) return;
+    
+    if (confirm("確定要清空所有歷史紀錄嗎？")) {
+      localStorage.removeItem('periodHistory');
+      loadHistory();
+    }
+  }
+</script>
+
+</body>
+</html>
